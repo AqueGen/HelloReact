@@ -17,22 +17,29 @@ class GlobalEvent3 extends React.Component<IProps, IState> {
     constructor(props: IProps) {
         super(props);
 
+
         this.state = {
             eventValue: ""
         }
     }
 
-    componentDidMount(): void {
-        window.addEventListener(GLOBAL_EVENT, ((event: CustomEvent<string>) => {
-            this.setState({
-                eventValue: event.detail
-            });
-        }) as EventListener);
+    myEvent = (event: CustomEvent<string>): void => {
+        this.setState({
+            eventValue: event.detail
+        });
     }
 
     dispatchGlobalEvent(): void {
         let globalEvent = new CustomEvent(GLOBAL_EVENT, {detail: this.title});
         window.dispatchEvent(globalEvent);
+    }
+
+    componentDidMount(): void {
+        window.addEventListener(GLOBAL_EVENT, this.myEvent as EventListener);
+    }
+
+    componentWillUnmount(): void {
+        window.removeEventListener(GLOBAL_EVENT, this.myEvent as EventListener);
     }
 
     render() {
