@@ -5,7 +5,7 @@ import GlobalEvent2 from "./GlobalEvent2";
 import {GLOBAL_EVENT} from "../../Consts/GlobalEvent";
 
 interface IState {
-    eventValue: string
+    value: string
 }
 
 interface IProps {
@@ -21,50 +21,43 @@ class GlobalEvent extends React.Component<IProps, IState> {
         super(props);
 
         this.state = {
-            eventValue: ""
+            value: this.title
         }
     }
 
-    myEvent = (event: CustomEvent<string>): void  => {
+    changeGlobalEvent(): void {
         this.setState({
-            eventValue: event.detail
-        });
+            value: this.title
+        })
     }
 
-    dispatchGlobalEvent(): void {
-        let globalEvent = new CustomEvent(GLOBAL_EVENT, {detail: this.title});
-        window.dispatchEvent(globalEvent);
-    }
-
-    componentDidMount(): void {
-        window.addEventListener(GLOBAL_EVENT, this.myEvent as EventListener, true);
-    }
-
-    componentWillUnmount(): void {
-        window.removeEventListener(GLOBAL_EVENT, this.myEvent as EventListener, true);
+    onChangeGlobalEvent(value: string): void {
+        this.setState({
+            value: value
+        })
     }
 
     render() {
         return (
             <div>
-                <div>{this.title} -> {this.state.eventValue}</div>
+                <div>{this.title} -> {this.state.value}</div>
                 <div>
-                    <button onClick={e => this.dispatchGlobalEvent()}>{this.title}</button>
+                    <button onClick={e => this.changeGlobalEvent()}>{this.title}</button>
                 </div>
                 <hr/>
                 <div>
                     GlobalEvent_1:
-                    <GlobalEvent1/>
+                    <GlobalEvent1 value={this.state.value} changeValue={e => this.onChangeGlobalEvent(e)}/>
                 </div>
                 <hr/>
                 <div>
                     GlobalEvent_2:
-                    <GlobalEvent2/>
+                    <GlobalEvent2 value={this.state.value} changeValue={e => this.onChangeGlobalEvent(e)}/>
                 </div>
                 <hr/>
                 <div>
                     GlobalEvent_3:
-                    <GlobalEvent3/>
+                    <GlobalEvent3 value={this.state.value} changeValue={e => this.onChangeGlobalEvent(e)}/>
                 </div>
             </div>
 

@@ -2,11 +2,12 @@ import * as React from "react";
 import {GLOBAL_EVENT} from "../../Consts/GlobalEvent";
 
 interface IState {
-    eventValue: string
+
 }
 
 interface IProps {
-
+    value: string,
+    changeValue: ((value: string) => void)
 }
 
 
@@ -18,36 +19,26 @@ class GlobalEvent3 extends React.Component<IProps, IState> {
         super(props);
 
 
-        this.state = {
-            eventValue: ""
+    }
+
+    componentDidUpdate(prevProps: Readonly<IProps>, prevState: Readonly<IState>, snapshot?: any): void {
+        if(this.props.changeValue !== prevProps.changeValue){
+            this.setState({
+                eventValue: this.props.value
+            });
         }
     }
 
-    myEvent = (event: CustomEvent<string>): void => {
-        this.setState({
-            eventValue: event.detail
-        });
-    }
-
-    dispatchGlobalEvent(): void {
-        let globalEvent = new CustomEvent(GLOBAL_EVENT, {detail: this.title});
-        window.dispatchEvent(globalEvent);
-    }
-
-    componentDidMount(): void {
-        window.addEventListener(GLOBAL_EVENT, this.myEvent as EventListener);
-    }
-
-    componentWillUnmount(): void {
-        window.removeEventListener(GLOBAL_EVENT, this.myEvent as EventListener);
+    changeGlobalEvent(): void {
+        this.props.changeValue(this.title)
     }
 
     render() {
         return (
             <div>
-                <div>{this.title} -> {this.state.eventValue}</div>
+                <div>{this.title} -> {this.props.value}</div>
                 <div>
-                    <button onClick={e => this.dispatchGlobalEvent()}>{this.title}</button>
+                    <button onClick={e => this.changeGlobalEvent()}>{this.title}</button>
                 </div>
             </div>
         );
