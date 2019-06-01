@@ -1,14 +1,14 @@
 import {type} from "os";
 import * as React from "react";
 import * as Modal from "react-modal";
-import Welcome from "../../Types/Welcome";
 import {Ref, RefObject} from "react";
+import {IWelcomeType} from "../../store/types";
 
 type Props = {
-    welcome: Welcome
+    welcome: IWelcomeType
 }
 type States = {
-    welcome: Welcome,
+    welcome: IWelcomeType,
     isShow: boolean
 }
 

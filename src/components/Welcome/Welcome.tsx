@@ -5,7 +5,7 @@ import * as Modal from 'react-modal';
 import {createContext} from 'react';
 import WelcomeLanguage from "./WelcomeLanguage";
 import WelcomeModal from "./WelcomeModal";
-import WelcomeType from "../../Types/Welcome"; // we need this to make JSX compile
+import {IWelcomeType} from "../../store/types"; // we need this to make JSX compile
 
 type Props = {
     title: string
@@ -13,13 +13,13 @@ type Props = {
 
 type State = {
     title: string,
-    welcome: WelcomeType
+    welcome: IWelcomeType
 }
 
 
 class Welcome extends React.Component<Props, State> {
 
-    welcomes: WelcomeType[] = [
+    welcomes: IWelcomeType[] = [
         {
             language: "English",
             hello: "Welcome world"
@@ -48,7 +48,7 @@ class Welcome extends React.Component<Props, State> {
     }
 
     _handleSelectWelcome(event: string): void {
-        let filteredWelcomes: WelcomeType[] = this.welcomes.filter(m => m.language == event);
+        let filteredWelcomes: IWelcomeType[] = this.welcomes.filter(m => m.language == event);
 
         if (filteredWelcomes.length > 0) {
             this.setState({

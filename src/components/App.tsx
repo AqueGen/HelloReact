@@ -28,7 +28,7 @@ class App extends React.Component {
 
                         <hr/>
 
-                        <Route exact path="/" component={Home}/>
+                        <Route exact path="/" component={GlobalEvent}/>
                         <Route path="/welcome" component={Welcome}/>
                         <Route path="/globalEvents" component={GlobalEvent}/>
                     </div>

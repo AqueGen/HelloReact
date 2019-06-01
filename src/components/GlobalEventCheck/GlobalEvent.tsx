@@ -1,68 +1,65 @@
 import * as React from "react";
+import {GlobalEventState} from "../../store/types";
+import {changeEventValue} from "../../store/actions";
+import {connect} from "react-redux";
+import {bindActionCreators, Dispatch} from "redux";
 import GlobalEvent1 from "./GlobalEvent1";
-import GlobalEvent3 from "./GlobalEvent3";
 import GlobalEvent2 from "./GlobalEvent2";
-import {GLOBAL_EVENT} from "../../Consts/GlobalEvent";
 
 interface IState {
-    value: string
-}
-
-interface IProps {
 
 }
 
+
+interface PropsFromDispatch  {
+    changeEventValue: typeof changeEventValue
+}
+
+interface PropsFromState {
+    eventValue: string
+}
+
+type IProps =  PropsFromDispatch & PropsFromState;
 
 class GlobalEvent extends React.Component<IProps, IState> {
 
     title: string = "Global event MAIN";
 
-    constructor(props: IProps) {
-        super(props);
-
-        this.state = {
-            value: this.title
-        }
-    }
-
-    changeGlobalEvent(): void {
-        this.setState({
-            value: this.title
-        })
-    }
-
-    onChangeGlobalEvent(value: string): void {
-        this.setState({
-            value: value
-        })
-    }
-
     render() {
+
+        const {changeEventValue, eventValue} = this.props;
+
         return (
             <div>
-                <div>{this.title} -> {this.state.value}</div>
+                <div>{this.title} -> {eventValue}</div>
                 <div>
-                    <button onClick={e => this.changeGlobalEvent()}>{this.title}</button>
+                    <button onClick={e => changeEventValue(this.title)}>{this.title}</button>
                 </div>
                 <hr/>
                 <div>
                     GlobalEvent_1:
-                    <GlobalEvent1 value={this.state.value} changeValue={e => this.onChangeGlobalEvent(e)}/>
+                    <GlobalEvent1/>
                 </div>
                 <hr/>
                 <div>
                     GlobalEvent_2:
-                    <GlobalEvent2 value={this.state.value} changeValue={e => this.onChangeGlobalEvent(e)}/>
+                    <GlobalEvent2/>
                 </div>
                 <hr/>
-                <div>
-                    GlobalEvent_3:
-                    <GlobalEvent3 value={this.state.value} changeValue={e => this.onChangeGlobalEvent(e)}/>
-                </div>
             </div>
 
         );
     }
+
+
 }
 
-export default GlobalEvent;
+const mapStateToProps = ({globalEventValue}: GlobalEventState) => ({
+    eventValue: globalEventValue
+});
+
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+    changeEventValue: (value: string) => dispatch(changeEventValue(value))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(GlobalEvent);
